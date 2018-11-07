@@ -8,38 +8,80 @@ export default function Snake({direction = 'right', length = 0} = {}) {
 		this.parts.push(new SnakePart());
     this.parts[i]['direction'] = direction;
   }
+
+  this.head = this.parts[0];
   
-  
+  let coordX;
+  let coordY;
 	
     switch(this.direction) {
-      case "right": 
-      //   this.x +=steps;
+	  case "right": 
+	  coordX = this.length-1;
+	  for(let i = 0; i < this.length; i++) {
+		this.parts[i]['x'] = coordX;
+		coordX--;
+		console.log(coordX);
+	}
         break;
-      case "left":
-      //   this.x -=steps;
+	  case "left":
+	  coordX = this.length-1;
+      for(let i = 0; i < this.length-1; i++) {
+		this.parts[i]['x'] = -coordX;
+		(-coordX--);
+		console.log(-coordX);
+	}
         break;
-      case "up":
-      //   this.y -=steps;
+	  case "up":
+	  coordY = this.length-1;
+	  for(let i = 0; i < this.length-1; i++) {
+		this.parts[i]['y'] = -coordY;
+		-(coordY--);
+	}
         break;
-      case "down":
+	  case "down":
+	  coordY = this.length-1;
       for(let i = 0; i < this.length; i++) {
-          this.parts[i]['y'] = +this.parts[i]['y'] + 1;
+		  this.parts[i]['y'] = coordY;
+		  coordY--;
       }
         break;  
       }
 	
-	this.head = this.parts[0];
+	
 }
 
-Snake.prototype.eat = function() {
-	this.parts.push(this.parts[this.parts.length-1]);
+Snake.prototype.eat = function({direction = 'right', length = 1} = {}) {
+	// this.parts.push(this.parts[this.parts.length-1]);
+	// this.parts.push();
+	this.parts.length === 0 ? snake.length = 1 : this.parts.push(new SnakePart());
+	// console.log(this.parts.length);
+	// switch(this.direction) {
+	// 	case "right": 
+	// 	//   this.x +=steps;
+	// 	  break;
+	// 	case "left":
+	// 	//   this.x -=steps;
+	// 	  break;
+	// 	case "up":
+	// 	//   this.y -=steps;
+	// 	  break;
+	// 	case "down":
+	// 	//   this.y +=steps;
+	// 	  break; 
+	// }
+	console.log(snake.length);
 };
 
 Snake.prototype.move = function(steps = 1) {
 	this.direction = this.head.direction;
+	steps = steps +(this.length - 1);
 	switch(this.direction) {
 		case "right": 
-		  this.x +=steps;
+		for(let i = 0; i < this.length; i++) {
+		  this.parts[i]['x'] = steps;
+		  steps--;
+		  console.log(steps);
+	  }
 		  break;
 		case "left":
 		  this.x -=steps;
@@ -48,15 +90,36 @@ Snake.prototype.move = function(steps = 1) {
 		  this.y -=steps;
 		  break;
 		case "down":
-		  this.y +=steps;
+		coordY = this.length-1;
+		for(let i = 0; i < this.length; i++) {
+			this.parts[i]['y'] = steps;
+			steps--;
+		}
 		  break;  
 	  }
 };
 
 let config = {
-	direction: 'down',
+	direction: 'right',
 	length: 5
 };
 
 let snake = new Snake(config);
-console.log(snake);
+console.log(snake.move(1));
+
+// it('length: 4, direction: left', function () {
+// 	let config = {
+// 		direction: 'left',
+// 		length: 4
+// 	};
+// 	let snake = new Snake(config);
+
+// 	[
+// 		{ x: -3, y: 0 },
+// 		{ x: -2, y: 0 },
+// 		{ x: -1, y: 0 },
+// 		{ x: 0, y: 0 }
+// 	].forEach(function (coords, i) {
+// 		expect({ x: snake.parts[i].x, y: snake.parts[i].y }).toEqual(coords);
+// 	});
+// });
