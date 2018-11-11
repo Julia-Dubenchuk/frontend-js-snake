@@ -11,6 +11,44 @@ export default function Snake ({ direction = 'right', length = 0 } = {}) {
 
 	this.head = this.parts[0];
 
+	// let coordX;
+	// let coordY;
+
+	// switch (this.direction) {
+	// 	case 'right':
+	// 		coordX = this.length - 1;
+	// 		for (let i = 0; i < this.length; i++) {
+	// 			this.parts[i].x = coordX;
+	// 			coordX--;
+	// 		}
+	// 		break;
+	// 	case 'left':
+	// 		coordX = this.length - 1;
+	// 		for (let i = 0; i < this.length - 1; i++) {
+	// 			this.parts[i].x = -coordX;
+	// 			coordX--;
+	// 		}
+	// 		break;
+	// 	case 'up':
+	// 		coordY = this.length - 1;
+	// 		for (let i = 0; i < this.length - 1; i++) {
+	// 			this.parts[i].y = -coordY;
+	// 			coordY--;
+	// 		}
+	// 		break;
+	// 	case 'down':
+	// 		coordY = this.length - 1;
+	// 		for (let i = 0; i < this.length; i++) {
+	// 			this.parts[i].y = coordY;
+	// 			coordY--;
+	// 		}
+	// 		break;
+	// }
+	this.switchDirection(this.direction);
+
+}
+
+Snake.prototype.switchDirection = function (direction) {
 	let coordX;
 	let coordY;
 
@@ -23,18 +61,22 @@ export default function Snake ({ direction = 'right', length = 0 } = {}) {
 			}
 			break;
 		case 'left':
-			coordX = this.length - 1;
-			for (let i = 0; i < this.length - 1; i++) {
-				this.parts[i].x = -coordX;
+			coordX = --this.parts[0].x;
+			for (let i = 0; i < this.length; i++) {
+				this.parts[i].x = -(coordX - this.length);
 				coordX--;
 			}
 			break;
 		case 'up':
-			coordY = this.length - 1;
-			for (let i = 0; i < this.length - 1; i++) {
-				this.parts[i].y = -coordY;
-				coordY--;
-			}
+			coordY = this.parts[0].y + this.length - 1;
+			console.log(coordY);
+			// for (let i = 0; i < this.length; i++) {
+			// 	this.parts[i].y = coordY - i;
+			// 	console.log(this.parts[i].y);
+			// }
+			this.parts.forEach(function (item, index) {
+				return item.y = coordY - ;
+			});
 			break;
 		case 'down':
 			coordY = this.length - 1;
@@ -45,9 +87,12 @@ export default function Snake ({ direction = 'right', length = 0 } = {}) {
 			break;
 	}
 
-
-}
-
+};
+let config = {
+	direction: 'up',
+	length: 2
+};
+let snake = new Snake(config);
 Snake.prototype.eat = function ({ direction = 'right', length = 1 } = {}) {
 	this.length = length;
 	if (this.length === 1) {
@@ -71,40 +116,7 @@ Snake.prototype.move = function (steps = 1) {
 	this.direction = this.direction;
 
 	// =================================================
-	let coordX;
-	let coordY;
-
-	switch (this.direction) {
-		case 'right':
-			coordX = this.length - 1;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].x = coordX;
-				coordX--;
-			}
-			break;
-		case 'left':
-			coordX = this.parts[0].x;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].x = -(coordX - this.length);
-				coordX--;
-			}
-			break;
-		case 'up':
-			coordY = this.parts[0].y;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].y = coordY;
-				coordY++;
-			}
-			break;
-		case 'down':
-			coordY = this.length - 1;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].y = coordY;
-				coordY--;
-			}
-			break;
-	}
-
+	this.switchDirection(this.direction);
 	// ==============================================
 	let cX = this.parts[0].x;
 	let cY = this.parts[0].y;
