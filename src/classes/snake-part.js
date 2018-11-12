@@ -11,6 +11,7 @@ SnakePart.prototype.move = function (steps = 0) {
 	switch (this.direction) {
 		case 'right':
 			this.x += steps;
+			console.log(this.x);
 			break;
 		case 'left':
 			this.x -= steps;
