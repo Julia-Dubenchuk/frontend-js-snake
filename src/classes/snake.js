@@ -10,48 +10,51 @@ export default function Snake ({ direction = 'right', length = 0 } = {}) {
 	}
 
 	this.head = this.parts[0];
+	this.chooseDirection();
 
-	let coordX;
-	let coordY;
+}
+
+Snake.prototype.chooseDirection = function () {
+	let coordX = 0;
+	let coordY = 0;
 
 	switch (this.direction) {
 		case 'right':
 			coordX = this.length - 1;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].x = coordX;
-				coordX--;
-			}
+			this.parts.forEach(function (item, index) {
+				return item.x = coordX - index;
+			});
 			break;
 		case 'left':
-			coordX = this.length - 1;
-			for (let i = 0; i < this.length - 1; i++) {
-				this.parts[i].x = -coordX;
-				coordX--;
+			if (!this.head.y) {
+				coordX = -(this.length - 1);
+				this.parts.forEach(function (item, index) {
+					return item.x = coordX + index;
+				});
 			}
 			break;
 		case 'up':
-			coordY = this.length - 1;
-			for (let i = 0; i < this.length - 1; i++) {
-				this.parts[i].y = -coordY;
-				coordY--;
+			if (!this.head.x) {
+				coordY = -(this.length - 1);
+				this.parts.forEach(function (item, index) {
+					return item.y = coordY + index;
+				});
 			}
 			break;
 		case 'down':
 			coordY = this.length - 1;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].y = coordY;
-				coordY--;
-			}
+			this.parts.forEach(function (item, index) {
+				return item.y = coordY - index;
+			});
 			break;
 	}
 
-
-}
-
-Snake.prototype.eat = function ({ direction = 'right', length = 1 } = {}) {
+};
+Snake.prototype.eat = function ({ length = 1 } = {}) {
 	this.length = length;
 	if (this.length === 1) {
 		this.parts.push(new SnakePart());
+		SnakePart.prototype.move();
 		this.length = this.parts.length;
 		this.head = this.parts[0];
 		for (let i = 0; i < this.length; i++) {
@@ -68,102 +71,84 @@ Snake.prototype.eat = function ({ direction = 'right', length = 1 } = {}) {
 };
 
 Snake.prototype.move = function (steps = 1) {
-	this.direction = this.direction;
-
-	// =================================================
-	let coordX;
-	let coordY;
-
+	this.chooseDirection();
+	if (this.parts[0].x !== 0 && this.parts[0].y !== 0) {
+		this.turn(steps);
+	}
+	else {
+		this.direct(steps);
+	}
+};
+Snake.prototype.direct = function (steps) {
 	switch (this.direction) {
 		case 'right':
-			coordX = this.length - 1;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].x = coordX;
-				coordX--;
-			}
+			this.parts.forEach(function (part) {
+				part.x += steps;
+			});
 			break;
 		case 'left':
-			coordX = this.parts[0].x;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].x = -(coordX - this.length);
-				coordX--;
-			}
+			this.parts.forEach(function (part) {
+				part.x -= steps;
+			});
 			break;
 		case 'up':
-			coordY = this.parts[0].y;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].y = coordY;
-				coordY++;
-			}
+			this.parts.forEach(function (part) {
+				part.y -= steps;
+			});
 			break;
 		case 'down':
-			coordY = this.length - 1;
-			for (let i = 0; i < this.length; i++) {
-				this.parts[i].y = coordY;
-				coordY--;
-			}
+			this.parts.forEach(function (part) {
+				part.y += steps;
+			});
 			break;
 	}
-
-	// ==============================================
-	let cX = this.parts[0].x;
-	let cY = this.parts[0].y;
+};
+Snake.prototype.turn = function (steps) {
+	let lengthParts = this.length - 1;
+	let difference = this.length - steps;
 
 	switch (this.direction) {
-		case 'right':
-			for (let i = 0; i < this.length; i++) {
-				if (steps > 0) {
-					this.parts[i].x = cX + steps;
-					this.parts[i].y = cY;
-					steps--;
-				}
-				else {
-					this.parts[i].x = this.parts[i - 1].x - 1;
-					this.parts[i].y = cY;
-				}
-			}
-			break;
 		case 'left':
-			for (let i = 0; i < this.length; i++) {
-				if (steps > 0) {
-					this.parts[i].y = cY;
-					this.parts[i].x = cX + i;
-					steps--;
-				}
-				else {
-					this.parts[i].y = cY;
-					this.parts[i].x = 0;
-				}
-			}
+			this.parts.forEach(function (part, i, parts) {
+				part.x -= lengthParts - i;
+				part.y = parts[0].y;
+			});
 			break;
 		case 'up':
-			for (let i = 0; i < this.length; i++) {
-				if (steps > 0) {
-					this.parts[i].y = cY + i;
-					this.parts[i].x = cX;
-					steps--;
+			this.parts.forEach(function (part, i, parts) {
+				if (i) {
+					part.y = parts[i - 1].y + 1;
+					part.x = parts[0].x;
 				}
 				else {
-					this.parts[i].y = this.parts[i - 1].y;
-					this.parts[i].x = cX;
+					part.y -= steps;
 				}
-
-			}
+			});
 			break;
 		case 'down':
-			for (let i = 0; i < this.length; i++) {
-				if (steps > 0) {
-					this.parts[i].y = cY - steps;
-					this.parts[i].x = cX;
-					cY -= steps;
-					steps--;
+			this.parts.forEach(function (part, i, parts) {
+				if (i <= steps) {
+					part.y -= steps;
+					parts[lengthParts - i].x += steps;
 				}
 				else {
-					this.parts[i].y = 0;
-					cX > 0 ? this.parts[i].x = cX-- : this.parts[i].x = 0;
-				}
+					part.y = parts[i - 1].y;
+					parts[lengthParts - i].x = parts[lengthParts - i + 1].x;
 
-			}
+				}
+			});
+			break;
+		default:
+			this.parts.forEach(function (part, i, parts) {
+				if (i < steps) {
+					part.x -= difference;
+					part.y = parts[0].y;
+				}
+				else {
+					part.x = parts[i - 1].x;
+					part.y = parts[i - 1].y - 1;
+				}
+			});
 			break;
 	}
 };
