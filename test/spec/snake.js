@@ -177,8 +177,7 @@ describe('Snake', function () {
 			let newSnakePart = {
 				x: 0,
 				y: -1
-			}
-;
+			};
 
 			snake.eat();
 			expect(snake).toHaveLength(1);
