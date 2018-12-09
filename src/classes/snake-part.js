@@ -1,9 +1,9 @@
 import BaseElement from './base-element';
 
 export default class SnakePart extends BaseElement {
-	constructor (direction = 'right') {
-		super();
-		this.direction = direction;
+	constructor (elements = { x: 0, y: 0, isVisible: true, direction: 'right' }) {
+		super(elements);
+		this.direction = elements.direction;
 	}
 	move (steps = 0) {
 		switch (this.direction) {

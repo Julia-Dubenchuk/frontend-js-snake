@@ -4,4 +4,5 @@ export default class BaseElement {
 		this.y = y;
 		this.visible = visible;
 	}
+
 }

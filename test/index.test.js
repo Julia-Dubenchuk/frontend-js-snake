@@ -1,4 +1,4 @@
-﻿import './spec/base-element.js';
-import './spec/food.js';
-import './spec/snake-part.js';
-import './spec/snake.js';
+﻿import './spec/base-element';
+import './spec/food';
+import './spec/snake-part';
+import './spec/snake';
