@@ -76,84 +76,84 @@ export default class Snake {
     this.head = this.parts[0];
   }
 
-  move(steps = 1) {
-    let currentSteps = steps;
-    let currentItem = this.parts[this.parts.length - 1].y + currentSteps;
+  move (steps = 1) {
+	let currentSteps = steps;
+	let currentItem = this.parts[this.parts.length - 1].y + currentSteps;
 
-    switch (this.direction) {
-      case 'right':
-        if (this.head.y === 0) {
-          this.parts.forEach(part => {
-            part.direction = this.direction;
-            part.move(steps);
-          });
-        }
-        else {
-          this.parts.forEach((part, index) => {
-            if (index < currentSteps) {
-              part.x += this.steps;
-              this.steps--;
-            }
-            else {
-              part.x = 0;
-            }
-            if (currentItem < this.parts[0].y) {
-              this.parts[this.parts.length - 1 - index].y += currentSteps;
-              currentItem = this.parts[this.parts.length - 1 - index].y + currentSteps;
-            }
-            else {
-              this.parts[this.parts.length - 1 - index].y = this.head.y;
-            }
-          });
-        }
-        break;
-      case 'left':
-        if (this.head.y === 0) {
-          this.parts.forEach(part => {
-            part.direction = this.direction;
-            part.move(steps);
-          });
-        }
-        else {
-          this.parts.forEach(part => {
-            part.y = this.head.y;
-            part.x -= this.steps;
-            this.steps--;
-          });
-        }
-        break;
-      case 'up':
-        if (this.head.y === 0) {
-          this.parts.forEach(part => {
-            part.direction = this.direction;
-            part.move(steps);
-          });
-        }
-        else {
-          this.parts.forEach((part, index) => {
-            part.x = this.head.x;
-            this.parts[this.parts.length - 1 - index].y = this.head.y - index;
-          });
-        }
-        break;
-      case 'down':
-        this.parts.forEach((part, index) => {
-          if (this.parts[0].x === 0) {
-            part.direction = this.direction;
-            part.move(steps);
-          }
-          else {
-            if (index <= steps) {
-              part.y += steps - index;
-              this.parts[this.parts.length - 1 - index].x += steps;
-            }
-            else {
-              this.parts[this.parts.length - 1 - index].x
-                = this.parts[this.parts.length - 1 - index + 1].x;
-            }
-          }
-        });
-        break;
-    }
-  }
+	switch (this.direction) {
+		case 'right':
+			if (this.head.y === 0) {
+				this.parts.forEach(part => {
+					part.direction = this.direction;
+					part.move(steps);
+				});
+			}
+			else {
+				this.parts.forEach((part, index) => {
+					if (index < currentSteps) {
+						part.x += this.steps;
+						this.steps--;
+					}
+					else {
+						part.x = 0;
+					}
+					if (currentItem < this.parts[0].y) {
+						this.parts[this.parts.length - 1 - index].y += currentSteps;
+						currentItem = this.parts[this.parts.length - 1 - index].y + currentSteps;
+					}
+					else {
+						this.parts[this.parts.length - 1 - index].y = this.head.y;
+					}
+				});
+			}
+			break;
+		case 'left':
+			if (this.head.y === 0) {
+				this.parts.forEach(part => {
+					part.direction = this.direction;
+					part.move(steps);
+				});
+			}
+			else {
+				this.parts.forEach(part => {
+					part.y = this.head.y;
+					part.x -= this.steps;
+					this.steps--;
+				});
+			}
+			break;
+		case 'up':
+			if (this.head.y === 0) {
+				this.parts.forEach(part => {
+					part.direction = this.direction;
+					part.move(steps);
+				});
+			}
+			else {
+				this.parts.forEach((part, index) => {
+					part.x = this.head.x;
+					this.parts[this.parts.length - 1 - index].y = this.head.y - index;
+				});
+			}
+			break;
+		case 'down':
+			this.parts.forEach((part, index) => {
+				if (this.parts[0].x === 0) {
+					part.direction = this.direction;
+					part.move(steps);
+				}
+				else {
+					if (index <= steps) {
+						part.y += steps - index;
+						this.parts[this.parts.length - 1 - index].x += steps;
+					}
+					else {
+						this.parts[this.parts.length - 1 - index].x
+			= this.parts[this.parts.length - 1 - index + 1].x;
+					}
+				}
+			});
+			break;
+	}
+}
 }
