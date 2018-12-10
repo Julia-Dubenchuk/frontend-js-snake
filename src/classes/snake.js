@@ -79,7 +79,6 @@ export default class Snake {
   move(steps = 1) {
     let currentSteps = steps;
     let currentItem = this.parts[this.parts.length - 1].y + currentSteps;
-
     switch (this.direction) {
       case 'right':
         if (this.head.y === 0) {
@@ -87,21 +86,18 @@ export default class Snake {
             part.direction = this.direction;
             part.move(steps);
           });
-        }
-        else {
+        } else {
           this.parts.forEach((part, index) => {
             if (index < currentSteps) {
-              part.x += this.steps;
-              this.steps--;
-            }
-            else {
+              part.x += steps;
+              steps--;
+            } else {
               part.x = 0;
             }
             if (currentItem < this.parts[0].y) {
               this.parts[this.parts.length - 1 - index].y += currentSteps;
               currentItem = this.parts[this.parts.length - 1 - index].y + currentSteps;
-            }
-            else {
+            } else {
               this.parts[this.parts.length - 1 - index].y = this.head.y;
             }
           });
@@ -113,12 +109,11 @@ export default class Snake {
             part.direction = this.direction;
             part.move(steps);
           });
-        }
-        else {
+        } else {
           this.parts.forEach(part => {
             part.y = this.head.y;
-            part.x -= this.steps;
-            this.steps--;
+            part.x -= steps;
+            steps--;
           });
         }
         break;
@@ -128,8 +123,7 @@ export default class Snake {
             part.direction = this.direction;
             part.move(steps);
           });
-        }
-        else {
+        } else {
           this.parts.forEach((part, index) => {
             part.x = this.head.x;
             this.parts[this.parts.length - 1 - index].y = this.head.y - index;
